@@ -12,5 +12,44 @@ export async function fetchPosts() {
       },
     }
   );
-  return await response.json();
+  return (await response.json()) as Post[];
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  body: string;
+  tags: string[];
+  media: string;
+  created: string;
+  updated: string;
+  _count: {
+    comments: number;
+    reactions: number;
+  };
+  author: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+  reactions: Array<{
+    symbol: string;
+    count: number;
+    postId: number;
+    message: string;
+  }>;
+  comments: Array<{
+    body: string;
+    replyToId: null | number;
+    id: number;
+    postId: number;
+    owner: string;
+    created: string;
+    author: {
+      name: string;
+      email: string;
+      avatar: string;
+      banner: string;
+    };
+  }>;
 }
