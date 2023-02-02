@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 import TimeAgo from "timeago-react";
-import { fetchPosts } from "../api";
+import { fetchPosts, Post } from "../api";
 import Bullhorn from "../components/icons/Bullhorn";
 import Comment from "../components/icons/Comment";
 
@@ -12,13 +12,17 @@ const Posts: FunctionComponent = () => {
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
-  const profilePicture = (post) =>
-    post.author.avatar || "../../public/img/shouter-avatar.png";
+  const profilePicture = (post: Post) =>
+    post.author.avatar || "../../public/img/default-profile-picture.png";
 
   return (
     <div className="container flex justify-evenly">
       {/* Left column */}
-      <div className="w-1/5">Shouter</div>
+      <div className="flex w-1/5 flex-col items-center pt-12">
+        <div className="">
+          <img src="../../public/img/logo.svg" />
+        </div>
+      </div>
 
       {/* Middle column */}
       <div className="min-h-screen w-3/5">
@@ -65,11 +69,11 @@ const Posts: FunctionComponent = () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center text-white">
+            <div className="flex items-center text-xs text-white">
               <Comment className="mr-2 h-4 fill-zinc-400" />
               {post._count.comments}
             </div>
-            <div className="flex h-12 flex-row-reverse items-center gap-2 pr-2">
+            <div className="flex h-12 flex-row-reverse items-center gap-2 pr-2 text-xs">
               {post.reactions.map((reaction) => (
                 <span className="text-white">{`${reaction.symbol}${reaction.count}`}</span>
               ))}
@@ -79,7 +83,20 @@ const Posts: FunctionComponent = () => {
       </div>
 
       {/* Right column */}
-      <div className="w-1/5">Login info</div>
+      <div className="w-1/5 pt-5 pl-5">
+        <div className="flex flex-row">
+          <div className="aspect-square h-6 w-6 overflow-hidden rounded-full">
+            <img
+              className="h-full w-full object-cover object-center"
+              src="../../public/img/default-profile-picture.png"
+            />
+          </div>
+          <div className="ml-2 flex flex-col text-xs text-white">
+            <div>Student name local storage</div>
+            <div>Log out</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
