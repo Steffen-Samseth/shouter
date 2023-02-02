@@ -12,6 +12,9 @@ const Posts: FunctionComponent = () => {
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
+  const profilePicture = (post) =>
+    post.author.avatar || "../../public/img/shouter-avatar.png";
+
   return (
     <div className="container flex justify-evenly">
       {/* Left column */}
@@ -36,7 +39,7 @@ const Posts: FunctionComponent = () => {
               <div className="aspect-square w-16 overflow-hidden rounded-full">
                 <img
                   className="h-full w-full object-cover object-center"
-                  src={post.author.avatar}
+                  src={profilePicture(post)}
                 />
               </div>
             </div>
@@ -66,7 +69,7 @@ const Posts: FunctionComponent = () => {
               <Comment className="mr-2 h-4 fill-zinc-400" />
               {post._count.comments}
             </div>
-            <div className="flex flex-row-reverse gap-2 pr-2">
+            <div className="flex h-12 flex-row-reverse items-center gap-2 pr-2">
               {post.reactions.map((reaction) => (
                 <span className="text-white">{`${reaction.symbol}${reaction.count}`}</span>
               ))}
