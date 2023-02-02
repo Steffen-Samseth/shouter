@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
+import TimeAgo from "timeago-react";
 import { fetchPosts } from "../api";
 import Bullhorn from "../components/icons/Bullhorn";
 import Comment from "../components/icons/Comment";
@@ -43,8 +44,8 @@ const Posts: FunctionComponent = () => {
               <span className="mr-2 self-center font-bold text-white">
                 {post.author.name}
               </span>
-              <span className="self-center font-bold text-white">
-                {post.created}
+              <span className="self-center text-white">
+                <TimeAgo datetime={post.created} />
               </span>
             </div>
             <div className="col-span-2 flex">
