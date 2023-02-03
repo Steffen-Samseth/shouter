@@ -15,6 +15,15 @@ export async function fetchPosts() {
   return (await response.json()) as Post[];
 }
 
+export async function fetchProfiles() {
+  const response = await fetch(`${API_URL}/social/profiles`, {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+  });
+  return (await response.json()) as Profile[];
+}
+
 export interface Post {
   id: number;
   title: string;
@@ -52,4 +61,16 @@ export interface Post {
       banner: string;
     };
   }>;
+}
+
+export interface Profile {
+  name: string;
+  email: string;
+  banner: string;
+  avatar: string;
+  _count: {
+    posts: number;
+    followers: number;
+    following: number;
+  };
 }
