@@ -6,10 +6,10 @@ const Register: FunctionComponent = () => {
   return (
     <Layout>
       <div className="h-full">
-        <div className="mb-1 flex flex-row bg-zinc-900 p-6">
+        <div className="mb-1 flex flex-row p-6">
           <h1 className="font-bold text-white">Register</h1>
         </div>
-        <div className="flex flex-col items-center bg-zinc-900 pt-4">
+        <div className="flex flex-col items-center pt-4">
           <form className="w-1/2 text-zinc-400">
             <label className="hidden">Email</label>
             <input

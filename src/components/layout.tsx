@@ -42,7 +42,7 @@ const Layout: FunctionComponent<Props> = ({ children }) => {
       </div>
 
       {/* Middle column */}
-      <div className="min-h-screen w-3/5">{children}</div>
+      <div className="min-h-screen w-3/5 bg-zinc-900">{children}</div>
 
       {/* Right column */}
       <div className="w-1/5 pt-5 pl-5">

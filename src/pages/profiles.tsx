@@ -19,7 +19,7 @@ const Profiles: FunctionComponent = () => {
   return (
     <Layout>
       <div className="h-full">
-        <div className="mb-1 flex flex-row bg-zinc-900 p-6">
+        <div className="mb-1 flex flex-row p-6">
           <Link to="/">
             <ArrowLeft className="h-6 fill-white pr-8" />
           </Link>
@@ -27,7 +27,7 @@ const Profiles: FunctionComponent = () => {
         </div>
         <div className="grid grid-cols-2">
           {query.data!.map((profile) => (
-            <div className="flex flex-row bg-zinc-900 p-4">
+            <div className="flex flex-row p-4">
               {/*Profile left column*/}
               <div className="flex flex-col items-center">
                 <div className="aspect-square h-12 w-12 overflow-hidden rounded-full">

@@ -18,7 +18,7 @@ const Posts: FunctionComponent = () => {
 
   return (
     <Layout>
-      <div className="mb-1 bg-zinc-900 px-6 py-8">
+      <div className="mb-1 px-6 py-8">
         <div className="flex h-10 items-center rounded-full bg-blue-800 px-8 text-white">
           <Bullhorn className="h-4 pr-8" />
           <input
@@ -30,7 +30,7 @@ const Posts: FunctionComponent = () => {
       </div>
 
       {query.data!.map((post) => (
-        <div className="mb-1 grid grid-cols-[100px_minmax(0,1fr)_minmax(0,1fr)] grid-rows-[auto_auto_auto] bg-zinc-900">
+        <div className="grid grid-cols-[100px_minmax(0,1fr)_minmax(0,1fr)] grid-rows-[auto_auto_auto] border-t-4 border-zinc-800">
           <div className="row-span-3 overflow-hidden p-5">
             <div className="aspect-square w-16 overflow-hidden rounded-full">
               <img
