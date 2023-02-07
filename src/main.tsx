@@ -13,6 +13,7 @@ import Register from "./pages/register";
 import SinglePost from "./pages/single_post";
 import SingleProfile from "./pages/single_profile";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Error404 from "./pages/error404";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/profiles/:id",
     element: <SingleProfile />,
+  },
+  {
+    path: "*",
+    element: <Error404 />,
   },
 ]);
 
