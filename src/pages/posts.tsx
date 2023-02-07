@@ -1,7 +1,9 @@
 import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import TimeAgo from "timeago-react";
 import { fetchPosts, Post } from "../api";
+import ArrowRight from "../components/icons/ArrowRight";
 import Bullhorn from "../components/icons/Bullhorn";
 import Comment from "../components/icons/Comment";
 import Layout from "../components/layout";
@@ -41,11 +43,16 @@ const Posts: FunctionComponent = () => {
           </div>
           <div className="col-span-2 flex h-12">
             <span className="mr-2 self-center font-bold text-white">
-              {post.author.name}
+              <Link className="self-center" to={`/posts/${post.id}`}>
+                {post.author.name}
+              </Link>
             </span>
             <span className="self-center text-white">
               <TimeAgo datetime={post.created} />
             </span>
+            <Link className="ml-auto self-center" to={`/posts/${post.id}`}>
+              <ArrowRight className="mr-4 h-4 fill-white"></ArrowRight>
+            </Link>
           </div>
           <div className="col-span-2 flex">
             <div className="max-w-full grow basis-px break-words text-white">
@@ -62,8 +69,13 @@ const Posts: FunctionComponent = () => {
             )}
           </div>
           <div className="flex items-center text-xs text-white">
-            <Comment className="mr-2 h-4 fill-zinc-400" />
-            {post._count.comments}
+            <Link
+              className="flex flex-row self-center"
+              to={`/posts/${post.id}`}
+            >
+              <Comment className="mr-2 h-4 fill-zinc-400" />
+              {post._count.comments}
+            </Link>
           </div>
           <div className="flex h-12 flex-row-reverse items-center gap-2 pr-2 text-xs">
             {post.reactions.map((reaction) => (
