@@ -15,6 +15,18 @@ export async function fetchPosts() {
   return (await response.json()) as Post[];
 }
 
+export async function fetchSinglePost(postId: number) {
+  const response = await fetch(
+    `${API_URL}/social/posts/${postId}?_author=true&_comments=true&_reactions=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    }
+  );
+  return (await response.json()) as Post;
+}
+
 export async function fetchProfiles() {
   const response = await fetch(`${API_URL}/social/profiles`, {
     headers: {
