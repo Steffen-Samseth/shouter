@@ -84,7 +84,10 @@ const SinglePost: FunctionComponent = () => {
             <div className="aspect-square w-8 overflow-hidden rounded-full">
               <img
                 className="h-full w-full object-cover object-center"
-                src={profilePicture(post)}
+                src={
+                  comment.author.avatar ||
+                  "../../public/img/default-profile-picture.png"
+                }
               />
             </div>
             <div className="ml-4 font-bold text-white">
