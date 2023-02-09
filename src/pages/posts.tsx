@@ -1,11 +1,8 @@
 import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
-import TimeAgo from "timeago-react";
-import { fetchPosts, Post } from "../api";
-import ArrowRight from "../components/icons/ArrowRight";
+import { fetchPosts } from "../api";
+import Post from "../components/Post";
 import Bullhorn from "../components/icons/Bullhorn";
-import Comment from "../components/icons/Comment";
 import Layout from "../components/layout";
 
 const Posts: FunctionComponent = () => {
@@ -14,9 +11,6 @@ const Posts: FunctionComponent = () => {
   if (query.isLoading) return <div>Loading...</div>;
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
-
-  const profilePicture = (post: Post) =>
-    post.author.avatar || "../../public/img/default-profile-picture.png";
 
   return (
     <Layout>
@@ -32,56 +26,7 @@ const Posts: FunctionComponent = () => {
       </div>
 
       {query.data!.map((post) => (
-        <div className="grid grid-cols-[100px_minmax(0,1fr)_minmax(0,1fr)] grid-rows-[auto_auto_auto] border-t-4 border-zinc-800">
-          <div className="row-span-2 overflow-hidden p-5">
-            <div className="aspect-square w-16 overflow-hidden rounded-full">
-              <img
-                className="h-full w-full object-cover object-center"
-                src={profilePicture(post)}
-              />
-            </div>
-          </div>
-          <div className="col-span-2 flex h-12">
-            <span className="mr-2 self-center font-bold text-white">
-              {post.author.name}
-            </span>
-            <span className="self-center text-white">
-              <TimeAgo datetime={post.created} />
-            </span>
-            <Link className="ml-auto self-center" to={`/posts/${post.id}`}>
-              <ArrowRight className="mr-4 h-4 fill-white"></ArrowRight>
-            </Link>
-          </div>
-          <div className="col-span-2 flex">
-            <div className="max-w-full grow basis-px break-words text-white">
-              <Link className="self-center" to={`/posts/${post.id}`}>
-                <h2 className="font-bold text-white">{post.title}</h2>
-              </Link>
-              {post.body}
-            </div>
-            {post.media && (
-              <div className="max-h-64 grow basis-px overflow-hidden">
-                <img
-                  className="h-full w-full object-cover object-center"
-                  src={post.media}
-                />
-              </div>
-            )}
-          </div>
-          <div className="col-span-3 flex flex-row justify-between px-5">
-            <Link className="self-center" to={`/posts/${post.id}`}>
-              <div className="flex items-center text-xs text-white">
-                <Comment className="mr-2 h-4 fill-zinc-400" />
-                {post._count.comments}
-              </div>
-            </Link>
-            <div className="flex h-12 flex-row-reverse items-center gap-2 text-xs">
-              {post.reactions.map((reaction) => (
-                <span className="text-white">{`${reaction.symbol}${reaction.count}`}</span>
-              ))}
-            </div>
-          </div>
-        </div>
+        <Post post={post} />
       ))}
     </Layout>
   );
