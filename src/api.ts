@@ -27,6 +27,29 @@ export async function fetchSinglePost(postId: number) {
   return (await response.json()) as Post;
 }
 
+export async function fetchPostsByProfile(profileName: string) {
+  const response = await fetch(
+    `${API_URL}/social/profiles/${profileName}/posts?_author=true&_reactions=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    }
+  );
+
+  if (response.status == 200) {
+    return (await response.json()) as Post[];
+  }
+
+  console.log(
+    "fetchPostsByProfile got unexpected response code",
+    response.status
+  );
+  console.log(response);
+
+  return null;
+}
+
 export async function fetchProfiles() {
   const response = await fetch(`${API_URL}/social/profiles`, {
     headers: {
@@ -34,6 +57,18 @@ export async function fetchProfiles() {
     },
   });
   return (await response.json()) as Profile[];
+}
+
+export async function fetchSingleProfile(profileName: string) {
+  const response = await fetch(
+    `${API_URL}/social/profiles/${profileName}?_followers=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    }
+  );
+  return (await response.json()) as Profile;
 }
 
 export interface Post {
@@ -85,4 +120,8 @@ export interface Profile {
     followers: number;
     following: number;
   };
+  followers: Array<{
+    name: string;
+    avatar: string;
+  }>;
 }
