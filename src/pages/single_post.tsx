@@ -36,17 +36,22 @@ const SinglePost: FunctionComponent = () => {
       </div>
       <div className="grid grid-cols-[100px_minmax(0,1fr)_minmax(0,1fr)] grid-rows-[auto_auto_auto] border-b-4 border-t-4 border-zinc-800">
         <div className="row-span-2 overflow-hidden p-5">
-          <div className="aspect-square w-16 overflow-hidden rounded-full">
-            <img
-              className="h-full w-full object-cover object-center"
-              src={profilePicture(post)}
-            />
-          </div>
+          <Link to={`/profiles/${post.author.name}`}>
+            <div className="aspect-square w-16 overflow-hidden rounded-full">
+              <img
+                className="h-full w-full object-cover object-center"
+                src={profilePicture(post)}
+              />
+            </div>
+          </Link>
         </div>
         <div className="col-span-2 flex h-12">
-          <span className="mr-2 self-center font-bold text-white">
+          <Link
+            to={`/profiles/${post.author.name}`}
+            className="mr-2 self-center font-bold text-white"
+          >
             {post.author.name}
-          </span>
+          </Link>
           <span className="self-center text-white">
             <TimeAgo datetime={post.created} />
           </span>
@@ -81,18 +86,24 @@ const SinglePost: FunctionComponent = () => {
       {post.comments.map((comment) => (
         <div className="mb-6 pl-4">
           <div className="flex items-center">
-            <div className="aspect-square w-8 overflow-hidden rounded-full">
-              <img
-                className="h-full w-full object-cover object-center"
-                src={
-                  comment.author.avatar ||
-                  "../../public/img/default-profile-picture.png"
-                }
-              />
-            </div>
-            <div className="ml-4 font-bold text-white">
+            <Link to={`/profiles/${comment.author.name}`}>
+              <div className="aspect-square w-8 overflow-hidden rounded-full">
+                <img
+                  className="h-full w-full object-cover object-center"
+                  src={
+                    comment.author.avatar ||
+                    "../../public/img/default-profile-picture.png"
+                  }
+                />
+              </div>
+            </Link>
+
+            <Link
+              to={`/profiles/${comment.author.name}`}
+              className="ml-4 font-bold text-white"
+            >
               {comment.author.name}
-            </div>
+            </Link>
             <Reply className="ml-4 h-4 fill-white"></Reply>
             <span className="ml-1 text-white">
               <TimeAgo datetime={post.created} />

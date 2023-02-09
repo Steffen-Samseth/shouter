@@ -29,12 +29,18 @@ const Profiles: FunctionComponent = () => {
           <div className="flex flex-row p-4">
             {/*Profile left column*/}
             <div className="flex flex-col items-center">
-              <div className="aspect-square h-12 w-12 overflow-hidden rounded-full">
-                <img
-                  className="h-full w-full object-cover object-center"
-                  src={profilePicture(profile)}
-                />
-              </div>
+              <Link to={`/profiles/${profile.name}`}>
+                <div className="aspect-square h-12 w-12 overflow-hidden rounded-full">
+                  <img
+                    className="h-full w-full object-cover object-center"
+                    src={profilePicture(profile)}
+                    onError={(e) =>
+                      (e.currentTarget.src =
+                        "../../public/img/default-profile-picture.png")
+                    }
+                  />
+                </div>
+              </Link>
               <button className="flex items-center p-2 text-xs text-blue-300">
                 <Heart className="mr-1 h-3 fill-blue-300" />
                 Follow
@@ -42,9 +48,12 @@ const Profiles: FunctionComponent = () => {
             </div>
             {/*Profile right column*/}
             <div className="ml-4 flex max-w-full grow flex-col">
-              <h1 className="break-words font-bold text-white">
+              <Link
+                to={`/profiles/${profile.name}`}
+                className="break-words font-bold text-white"
+              >
                 {profile.name}
-              </h1>
+              </Link>
               <div className="text-xs text-zinc-300">
                 Followers: {profile._count.followers}
               </div>
