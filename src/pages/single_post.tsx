@@ -106,7 +106,7 @@ const SinglePost: FunctionComponent = () => {
             </Link>
             <Reply className="ml-4 h-4 fill-white"></Reply>
             <span className="ml-1 text-white">
-              <TimeAgo datetime={post.created} />
+              <TimeAgo datetime={comment.created} />
             </span>
           </div>
           <div className="mt-2 text-white">{comment.body}</div>
