@@ -34,7 +34,7 @@ const SinglePost: FunctionComponent = () => {
       <Post post={post} clickable={false} />
       <div className="mb-4 p-4 text-white">Comments</div>
       {post.comments.map((comment) => (
-        <div className="mb-6 pl-4">
+        <div className="mb-6 pl-4" key={post.id}>
           <div className="flex items-center">
             <Link to={`/profiles/${comment.author.name}`}>
               <div className="aspect-square w-8 overflow-hidden rounded-full">

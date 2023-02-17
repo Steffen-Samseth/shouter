@@ -78,7 +78,7 @@ const SingleProfile: FunctionComponent = () => {
           <div className="flex items-center text-xs text-white">
             <div className="mr-4">Followers:</div>
             {profile.followers.slice(0, showNumFollowers).map((follower) => (
-              <Link to={`/profiles/${follower.name}`}>
+              <Link to={`/profiles/${follower.name}`} key={follower.name}>
                 <div
                   title={follower.name}
                   className="-ml-2 aspect-square w-6 overflow-hidden rounded-full"
@@ -101,7 +101,7 @@ const SingleProfile: FunctionComponent = () => {
         </div>
       </div>
       {posts.map((post) => (
-        <Post post={post} />
+        <Post post={post} key={post.id} />
       ))}
     </Layout>
   );

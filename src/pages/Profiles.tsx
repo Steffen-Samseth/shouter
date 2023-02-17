@@ -26,7 +26,7 @@ const Profiles: FunctionComponent = () => {
       </div>
       <div className="grid grid-cols-2 border-t-4 border-zinc-800">
         {query.data!.map((profile) => (
-          <div className="flex flex-row p-4">
+          <div className="flex flex-row p-4" key={profile.name}>
             {/*Profile left column*/}
             <div className="flex flex-col items-center">
               <Link to={`/profiles/${profile.name}`}>

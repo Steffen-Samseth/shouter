@@ -129,7 +129,10 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
         </Link>
         <div className="flex h-12 flex-row-reverse items-center gap-2 text-xs">
           {post.reactions.map((reaction) => (
-            <span className="text-white">{`${reaction.symbol} ${reaction.count}`}</span>
+            <span
+              className="text-white"
+              key={reaction.symbol}
+            >{`${reaction.symbol} ${reaction.count}`}</span>
           ))}
         </div>
       </div>

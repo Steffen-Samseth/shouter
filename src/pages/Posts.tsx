@@ -25,18 +25,18 @@ const Posts: FunctionComponent = () => {
         test button
       </button>
       <div className="mb-1 px-6 py-8">
-        <div className="flex h-10 items-center rounded-full bg-blue-800 px-8 text-white">
+        <div
+          className="flex h-10 items-center rounded-full bg-blue-800 px-8 text-white"
+          role="button"
+          tabIndex={0}
+        >
           <Bullhorn className="h-4 pr-8" />
-          <input
-            type="text"
-            value="SHOUT your feelings"
-            className="bg-transparent font-bold"
-          />
+          <div className="font-bold">SHOUT your feelings</div>
         </div>
       </div>
 
       {query.data!.map((post) => (
-        <Post post={post} />
+        <Post post={post} key={post.id} />
       ))}
     </Layout>
   );
