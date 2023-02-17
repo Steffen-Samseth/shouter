@@ -31,7 +31,7 @@ const SinglePost: FunctionComponent = () => {
         </Link>
         <h1 className="font-bold text-white">Shout</h1>
       </div>
-      <Post post={post} />
+      <Post post={post} clickable={false} />
       <div className="mb-4 p-4 text-white">Comments</div>
       {post.comments.map((comment) => (
         <div className="mb-6 pl-4">

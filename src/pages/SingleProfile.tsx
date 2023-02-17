@@ -1,4 +1,3 @@
-import { comment } from "postcss";
 import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";

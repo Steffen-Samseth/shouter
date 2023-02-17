@@ -10,8 +10,9 @@ import { useMutation, useQueryClient } from "react-query";
 
 interface Props {
   post: PostType;
+  clickable?: boolean;
 }
-const Post: FunctionComponent<Props> = ({ post }) => {
+const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
   const queryClient = useQueryClient();
   const deletePostMutation = useMutation(
     async () => await deletePost(post.id),
@@ -87,16 +88,20 @@ const Post: FunctionComponent<Props> = ({ post }) => {
               </button>
             </>
           )}
-          <Link className="ml-auto self-center" to={`/posts/${post.id}`}>
-            <ArrowRight className="mr-4 h-4 fill-white"></ArrowRight>
-          </Link>
+          {clickable && (
+            <Link className="ml-auto self-center" to={`/posts/${post.id}`}>
+              <ArrowRight className="mr-4 h-4 fill-white"></ArrowRight>
+            </Link>
+          )}
         </div>
       </div>
       <div className="col-span-2 flex">
         <div className="max-w-full grow basis-px break-words text-white">
-          <Link className="self-center" to={`/posts/${post.id}`}>
-            <h2 className="font-bold text-white">{post.title}</h2>
-          </Link>
+          {(clickable && (
+            <Link className="self-center" to={`/posts/${post.id}`}>
+              <h2 className="font-bold text-white">{post.title}</h2>
+            </Link>
+          )) || <h2 className="font-bold text-white">{post.title}</h2>}
           {post.body}
         </div>
         {post.media && (
@@ -114,8 +119,12 @@ const Post: FunctionComponent<Props> = ({ post }) => {
       <div className="col-span-3 flex flex-row justify-between px-5">
         <Link className="self-center" to={`/posts/${post.id}`}>
           <div className="flex items-center text-xs text-white">
-            <Comment className="mr-2 h-4 fill-zinc-400" />
-            {post._count.comments}
+            {clickable && (
+              <>
+                <Comment className="mr-2 h-4 fill-zinc-400" />
+                {post._count.comments}
+              </>
+            )}
           </div>
         </Link>
         <div className="flex h-12 flex-row-reverse items-center gap-2 text-xs">
