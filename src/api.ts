@@ -1,14 +1,113 @@
-const API_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjYxLCJuYW1lIjoiU3RlU2FtIiwiZW1haWwiOiJzdGVmZmVuLnNhbXNldGhAc3R1ZC5ub3JvZmYubm8iLCJhdmF0YXIiOm51bGwsImJhbm5lciI6bnVsbCwiaWF0IjoxNjc1MTcyMzUxfQ.qkYYdnoULDAHM3B2zkefWiMJ3bmJoZrDTImE5Q-YnxU";
-
 const API_URL = "https://api.noroff.dev/api/v1";
+
+// Fetches login info from localStorage
+export function getLoginInfo(): LoginInfo | null {
+  const loginInfoString = localStorage.getItem("login-info");
+
+  if (loginInfoString) return JSON.parse(loginInfoString) as LoginInfo;
+
+  return null;
+}
+
+// Saves login info in localStorage
+function setLoginInfo(loginInfo: LoginInfo) {
+  localStorage.setItem("login-info", JSON.stringify(loginInfo));
+}
+
+// Deletes login-info from localStorage
+export function signOut() {
+  localStorage.removeItem("login-info");
+}
+
+// Fetch access token from local storage, or crash if it doesn't exist
+//
+// Only use this from functions that will only be called when a user is already
+// logged in.
+//
+function getAccessToken() {
+  const loginInfo = getLoginInfo();
+
+  if (loginInfo === null) throw "User is not logged in!";
+
+  return loginInfo.accessToken;
+}
+
+export async function signIn(email: string, password: string) {
+  const response = await fetch(`${API_URL}/social/auth/login`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
+
+  if (response.status == 200) {
+    setLoginInfo(await response.json());
+    return true;
+  }
+
+  return false;
+}
+
+export async function createPost() {
+  const response = await fetch(`${API_URL}/social/posts`, {
+    method: "post",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "myTitle",
+      body: "test",
+      tags: ["test"],
+      media:
+        "https://images2.minutemediacdn.com/image/upload/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/shape/cover/sport/dataimagejpegbase649j4AAQSkZJRgABAQAAAQABAAD2wBDAA-5b40f5e07e270af8ccdfa80315d0d088.jpg",
+    }),
+  });
+  return await response.json();
+}
+
+export async function createComment(postId: number) {
+  const response = await fetch(`${API_URL}/social/posts/${postId}/comment`, {
+    method: "post",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      body: "",
+      created: "",
+      author: {
+        name: "",
+        email: "",
+        avatar: "",
+      },
+    }),
+  });
+  console.log(response);
+  return await response.json();
+}
+
+export async function deletePost(postId: number) {
+  const response = await fetch(`${API_URL}/social/posts/${postId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
+}
 
 export async function fetchPosts() {
   const response = await fetch(
     `${API_URL}/social/posts?_author=true&_reactions=true&limit=10`,
     {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     }
   );
@@ -20,7 +119,7 @@ export async function fetchSinglePost(postId: number) {
     `${API_URL}/social/posts/${postId}?_author=true&_comments=true&_reactions=true`,
     {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     }
   );
@@ -32,7 +131,7 @@ export async function fetchPostsByProfile(profileName: string) {
     `${API_URL}/social/profiles/${profileName}/posts?_author=true&_reactions=true`,
     {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     }
   );
@@ -53,7 +152,7 @@ export async function fetchPostsByProfile(profileName: string) {
 export async function fetchProfiles() {
   const response = await fetch(`${API_URL}/social/profiles`, {
     headers: {
-      Authorization: `Bearer ${API_TOKEN}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
   return (await response.json()) as Profile[];
@@ -64,7 +163,7 @@ export async function fetchSingleProfile(profileName: string) {
     `${API_URL}/social/profiles/${profileName}?_followers=true`,
     {
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     }
   );
@@ -124,4 +223,11 @@ export interface Profile {
     name: string;
     avatar: string;
   }>;
+}
+
+interface LoginInfo {
+  name: string;
+  email: string;
+  avatar: string | null;
+  accessToken: string;
 }

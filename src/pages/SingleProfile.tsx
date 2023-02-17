@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchPostsByProfile, fetchSingleProfile } from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
 import Heart from "../components/icons/Heart";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Post from "../components/Post";
 
 const SingleProfile: FunctionComponent = () => {

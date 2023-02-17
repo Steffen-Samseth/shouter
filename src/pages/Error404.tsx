@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 const Error404: FunctionComponent = () => {
   return (

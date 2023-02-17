@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { fetchProfiles, Profile } from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
 import Heart from "../components/icons/Heart";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 const Profiles: FunctionComponent = () => {
   const query = useQuery("profiles", fetchProfiles);

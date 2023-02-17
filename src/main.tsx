@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -6,16 +6,22 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./index.css";
-import Posts from "./pages/posts";
-import Profiles from "./pages/profiles";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import SinglePost from "./pages/single_post";
-import SingleProfile from "./pages/single_profile";
+import Posts from "./pages/Posts";
+import Profiles from "./pages/Profiles";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import SinglePost from "./pages/SinglePost";
+import SingleProfile from "./pages/SingleProfile";
 import { QueryClient, QueryClientProvider } from "react-query";
-import Error404 from "./pages/error404";
+import Error404 from "./pages/Error404";
+import { getLoginInfo } from "./api";
 
 const queryClient = new QueryClient();
+
+const PrivateRoute = ({ children }: { children: ReactElement }) => {
+  const loginInfo = getLoginInfo();
+  return loginInfo ? children : <Navigate to="/login" />;
+};
 
 const router = createBrowserRouter([
   {
@@ -24,11 +30,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/posts",
-    element: <Posts />,
+    element: (
+      <PrivateRoute>
+        <Posts />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/profiles",
-    element: <Profiles />,
+    element: (
+      <PrivateRoute>
+        <Profiles />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/login",
@@ -40,11 +54,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/posts/:id",
-    element: <SinglePost />,
+    element: (
+      <PrivateRoute>
+        <SinglePost />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/profiles/:name",
-    element: <SingleProfile />,
+    element: (
+      <PrivateRoute>
+        <SingleProfile />
+      </PrivateRoute>
+    ),
   },
   {
     path: "*",
