@@ -65,9 +65,9 @@ const Login: FunctionComponent = () => {
             </div>
             <input
               className="mt-6 mb-6 w-full cursor-pointer rounded bg-blue-800 py-2 text-white"
-              onClick={async (e) => {
+              onClick={(e) => {
                 e.preventDefault();
-                await submitForm();
+                submitForm();
               }}
               type="submit"
               value="Sign in"
