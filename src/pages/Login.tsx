@@ -24,7 +24,7 @@ const Login: FunctionComponent = () => {
   };
 
   return (
-    <Layout>
+    <Layout title="Sign in">
       <div className="h-full">
         <div className="mb-1 flex flex-row p-6">
           <h1 className="font-bold text-white">Sign in</h1>

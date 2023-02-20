@@ -32,7 +32,7 @@ const SingleProfile: FunctionComponent = () => {
   const excessFollowers = totalNumFollowers - showNumFollowers;
 
   return (
-    <Layout>
+    <Layout title={profile.name}>
       <div className="flex flex-row border-b-4 border-zinc-800 p-6">
         <Link to="/">
           <ArrowLeft className="h-6 fill-white pr-8" />

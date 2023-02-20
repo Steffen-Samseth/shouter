@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 
 const Register: FunctionComponent = () => {
   return (
-    <Layout>
+    <Layout title="Register">
       <div className="h-full">
         <div className="mb-1 flex flex-row p-6">
           <h1 className="font-bold text-white">Register</h1>

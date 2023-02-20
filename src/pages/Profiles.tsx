@@ -17,7 +17,7 @@ const Profiles: FunctionComponent = () => {
     profile.avatar || "../../public/img/default-profile-picture.png";
 
   return (
-    <Layout>
+    <Layout title="Shouters">
       <div className="mb-1 flex flex-row p-6">
         <Link to="/">
           <ArrowLeft className="h-6 fill-white pr-8" />

@@ -24,7 +24,7 @@ const SinglePost: FunctionComponent = () => {
   const post = query.data!;
 
   return (
-    <Layout>
+    <Layout title={post.title}>
       <div className="mb-1 flex flex-row p-6">
         <Link to="/">
           <ArrowLeft className="h-6 fill-white pr-8" />
