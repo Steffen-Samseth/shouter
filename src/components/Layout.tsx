@@ -32,28 +32,16 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
           </div>
           {isLoggedIn && (
             <nav className="flex flex-col gap-3 text-white">
-              <Link
-                to="/"
-                className="flex h-8 w-36 items-center justify-center rounded bg-blue-800"
-              >
+              <Link to="/" className="button">
                 Feed
               </Link>
-              <Link
-                to="/"
-                className="flex h-8 w-36 items-center justify-center rounded bg-blue-800"
-              >
+              <Link to="/" className="button">
                 My profile
               </Link>
-              <Link
-                to="/profiles"
-                className="flex h-8 w-36 items-center justify-center rounded bg-blue-800"
-              >
+              <Link to="/profiles" className="button">
                 View all profile
               </Link>
-              <Link
-                to="/"
-                className="flex h-8 w-36 items-center justify-center rounded bg-blue-800"
-              >
+              <Link to="/" className="button">
                 About us
               </Link>
             </nav>

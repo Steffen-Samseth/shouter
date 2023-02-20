@@ -170,7 +170,44 @@ export async function fetchSingleProfile(profileName: string) {
       },
     }
   );
-  return (await response.json()) as Profile;
+  if (response.status == 200) {
+    return (await response.json()) as Profile;
+  }
+  return null;
+}
+
+export async function editAvatarUrl(profileName: string, avatar: string) {
+  const response = await fetch(
+    `${API_URL}/social/profiles/${profileName}/media`,
+    {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        avatar: avatar,
+      }),
+    }
+  );
+  return response.status == 200;
+}
+
+export async function editBannerUrl(profileName: string, banner: string) {
+  const response = await fetch(
+    `${API_URL}/social/profiles/${profileName}/media`,
+    {
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        banner: banner,
+      }),
+    }
+  );
+  return response.status == 200;
 }
 
 export interface Post {

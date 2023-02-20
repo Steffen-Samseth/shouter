@@ -1,18 +1,49 @@
-import { FunctionComponent } from "react";
-import { useQuery } from "react-query";
+import { FunctionComponent, useState } from "react";
+import { useMutation, useQuery } from "react-query";
 import { Link, useParams } from "react-router-dom";
-import { fetchPostsByProfile, fetchSingleProfile } from "../api";
+import {
+  editAvatarUrl,
+  editBannerUrl,
+  fetchPostsByProfile,
+  fetchSingleProfile,
+  getLoginInfo,
+} from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
 import Heart from "../components/icons/Heart";
+import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 import Post from "../components/Post";
 
 const SingleProfile: FunctionComponent = () => {
+  const [bannerPopupIsOpen, setBannerPopupIsOpen] = useState(false);
+  const [newBannerUrl, setNewBannerUrl] = useState("");
+  const [avatarPopupIsOpen, setAvatarPopupIsOpen] = useState(false);
+  const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const { name: profileName } = useParams();
   const query = useQuery(`profile-${profileName}`, async () => {
     const profile = await fetchSingleProfile(profileName!);
     const posts = await fetchPostsByProfile(profileName!);
     return [profile, posts] as const;
+  });
+
+  const updateBannerMutation = useMutation({
+    mutationFn: (_) => {
+      return editBannerUrl(profileName!, newBannerUrl);
+    },
+    onSuccess: () => {
+      query.refetch();
+      setBannerPopupIsOpen(false);
+    },
+  });
+
+  const updateAvatarMutation = useMutation({
+    mutationFn: (_) => {
+      return editAvatarUrl(profileName!, newAvatarUrl);
+    },
+    onSuccess: () => {
+      query.refetch();
+      setAvatarPopupIsOpen(false);
+    },
   });
 
   if (query.isLoading) return <div className="text-white">Loading...</div>;
@@ -25,13 +56,6 @@ const SingleProfile: FunctionComponent = () => {
   const [profile, posts] = query.data!;
 
   if (profile == null || posts == null)
-    return <div className="text-white">Error 404</div>;
-
-  const showNumFollowers = 5;
-  const totalNumFollowers = profile.followers.length;
-  const excessFollowers = totalNumFollowers - showNumFollowers;
-
-  if (!query.data) {
     return (
       <Layout>
         <div className="mb-1 flex flex-row p-6">
@@ -42,7 +66,10 @@ const SingleProfile: FunctionComponent = () => {
         </div>
       </Layout>
     );
-  }
+
+  const showNumFollowers = 5;
+  const totalNumFollowers = profile.followers.length;
+  const excessFollowers = totalNumFollowers - showNumFollowers;
 
   return (
     <Layout title={profile.name}>
@@ -76,14 +103,33 @@ const SingleProfile: FunctionComponent = () => {
               }
             />
           </div>
-          <div className="pt-4 text-right">
-            <button className="inline-flex items-center gap-2 text-zinc-400">
-              <Heart className="w-4 fill-zinc-400" />
-              Follow
-            </button>
-            <div className="text-zinc-400">
-              {profile._count.followers} Followers
-            </div>
+          <div className="flex flex-col gap-2 pt-4 text-right">
+            {getLoginInfo()!.name == profile.name ? (
+              <>
+                <button
+                  onClick={() => setBannerPopupIsOpen(true)}
+                  className="button"
+                >
+                  Edit banner
+                </button>
+                <button
+                  onClick={() => setAvatarPopupIsOpen(true)}
+                  className="button"
+                >
+                  Edit avatar
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="inline-flex items-center gap-2 text-zinc-400">
+                  <Heart className="w-4 fill-zinc-400" />
+                  Follow
+                </button>
+                <div className="text-zinc-400">
+                  {profile._count.followers} Followers
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div>
@@ -116,6 +162,74 @@ const SingleProfile: FunctionComponent = () => {
       {posts.map((post) => (
         <Post post={post} key={post.id} />
       ))}
+
+      {bannerPopupIsOpen && (
+        <div
+          id="banner-popup-backdrop"
+          onClick={(e) => {
+            if ((e.target as HTMLDivElement).id == "banner-popup-backdrop")
+              setBannerPopupIsOpen(false);
+          }}
+          className="fixed inset-0 flex items-center justify-center bg-gray-500/50 backdrop-blur"
+        >
+          <div className="flex flex-col justify-center gap-2 rounded bg-black p-20 text-white">
+            {updateBannerMutation.isLoading ? (
+              <LoadingSpinner className="w-24" />
+            ) : (
+              <>
+                <label>New url for banner image</label>
+                <input
+                  value={newBannerUrl}
+                  className="p-1 text-black"
+                  onChange={(e) => setNewBannerUrl(e.target.value)}
+                />
+                <button
+                  className="button"
+                  onClick={() => {
+                    updateBannerMutation.mutate();
+                  }}
+                >
+                  Submit
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {avatarPopupIsOpen && (
+        <div
+          id="avatar-popup-backdrop"
+          onClick={(e) => {
+            if ((e.target as HTMLDivElement).id == "avatar-popup-backdrop")
+              setAvatarPopupIsOpen(false);
+          }}
+          className="fixed inset-0 flex items-center justify-center bg-gray-500/50 backdrop-blur"
+        >
+          <div className="flex flex-col justify-center gap-2 rounded bg-black p-20 text-white">
+            {updateAvatarMutation.isLoading ? (
+              <LoadingSpinner className="w-24" />
+            ) : (
+              <>
+                <label>New url for avatar image</label>
+                <input
+                  value={newAvatarUrl}
+                  className="p-1 text-black"
+                  onChange={(e) => setNewAvatarUrl(e.target.value)}
+                />
+                <button
+                  className="button"
+                  onClick={() => {
+                    updateAvatarMutation.mutate();
+                  }}
+                >
+                  Submit
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
