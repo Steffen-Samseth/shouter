@@ -15,6 +15,7 @@ import SingleProfile from "./pages/SingleProfile";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Error404 from "./pages/Error404";
 import { getLoginInfo } from "./api";
+import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -77,7 +78,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -21,6 +21,19 @@ const SinglePost: FunctionComponent = () => {
       <div className="text-white">{`An error has occured ${query.error}`}</div>
     );
 
+  if (!query.data) {
+    return (
+      <Layout>
+        <div className="mb-1 flex flex-row p-6">
+          <Link to="/">
+            <ArrowLeft className="h-6 fill-white pr-8" />
+          </Link>
+          <h1 className="font-bold text-white">404 post not found</h1>
+        </div>
+      </Layout>
+    );
+  }
+
   const post = query.data!;
 
   return (

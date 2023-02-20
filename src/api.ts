@@ -123,7 +123,10 @@ export async function fetchSinglePost(postId: number) {
       },
     }
   );
-  return (await response.json()) as Post;
+  if (response.status == 200) {
+    return (await response.json()) as Post;
+  }
+  return null;
 }
 
 export async function fetchPostsByProfile(profileName: string) {

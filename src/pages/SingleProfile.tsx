@@ -31,6 +31,19 @@ const SingleProfile: FunctionComponent = () => {
   const totalNumFollowers = profile.followers.length;
   const excessFollowers = totalNumFollowers - showNumFollowers;
 
+  if (!query.data) {
+    return (
+      <Layout>
+        <div className="mb-1 flex flex-row p-6">
+          <Link to="/">
+            <ArrowLeft className="h-6 fill-white pr-8" />
+          </Link>
+          <h1 className="font-bold text-white">404 profile not found</h1>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout title={profile.name}>
       <div className="flex flex-row border-b-4 border-zinc-800 p-6">
