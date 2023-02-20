@@ -17,6 +17,11 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
   return (
     <>
       <Helmet>
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="../../public/img/logo.svg"
+        />
         <title>{title}</title>
       </Helmet>
       <div className="container flex justify-evenly">
