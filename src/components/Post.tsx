@@ -105,7 +105,7 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
           {post.body}
         </div>
         {post.media && (
-          <div className="max-h-64 grow basis-px overflow-hidden">
+          <div className="max-h-128 grow basis-px overflow-hidden">
             <img
               className="h-full w-full object-cover object-center"
               src={post.media}
