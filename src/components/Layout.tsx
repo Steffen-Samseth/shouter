@@ -35,7 +35,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
               <Link to="/" className="button">
                 Feed
               </Link>
-              <Link to="/" className="button">
+              <Link to={`/profiles/${loginInfo.name}`} className="button">
                 My profile
               </Link>
               <Link to="/profiles" className="button">
