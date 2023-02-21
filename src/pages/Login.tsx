@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../api";
+import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 
 const Login: FunctionComponent = () => {
@@ -19,10 +20,6 @@ const Login: FunctionComponent = () => {
     }
   );
 
-  const submitForm = () => {
-    loginMutation.mutate();
-  };
-
   return (
     <Layout title="Sign in">
       <div className="h-full">
@@ -30,29 +27,30 @@ const Login: FunctionComponent = () => {
           <h1 className="font-bold text-white">Sign in</h1>
         </div>
         <div className="flex flex-col items-center pt-4">
-          <form className="w-1/2 text-zinc-400">
+          <form className="flex w-1/2 flex-col gap-6 text-zinc-400">
             <label className="hidden">Email</label>
             <input
-              className="mt-4 w-full rounded border border-zinc-400 bg-zinc-900 py-2 px-4"
+              disabled={loginMutation.isLoading}
+              className="text-input w-full"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
-              name="Email"
               placeholder="Email"
               autoComplete="username"
             />
             <label className="hidden">Password</label>
             <input
-              className="mt-6 w-full rounded border border-zinc-400 bg-zinc-900 py-2 px-4"
+              disabled={loginMutation.isLoading}
+              className="text-input w-full"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
               autoComplete="current-password"
-              name="Password"
             />
-            <div className="mt-6 flex items-center pl-4">
+            <div className="flex items-center pl-4">
               <input
+                disabled={loginMutation.isLoading}
                 className="h-4 w-4 fill-blue-800"
                 onChange={(e) => setRememberMe(e.target.checked)}
                 checked={rememberMe}
@@ -63,15 +61,21 @@ const Login: FunctionComponent = () => {
                 Remember me
               </label>
             </div>
-            <input
-              className="mt-6 mb-6 w-full cursor-pointer rounded bg-blue-800 py-2 text-white"
+            <button
+              disabled={loginMutation.isLoading}
+              className="button mb-6 h-10 w-full"
               onClick={(e) => {
                 e.preventDefault();
-                submitForm();
+                loginMutation.mutate();
               }}
               type="submit"
-              value="Sign in"
-            />
+            >
+              {loginMutation.isLoading ? (
+                <LoadingSpinner className="w-4" />
+              ) : (
+                "Sign in"
+              )}
+            </button>
           </form>
           <div className="mb-6 text-zinc-400">
             Don't have an account?

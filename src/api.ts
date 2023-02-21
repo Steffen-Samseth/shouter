@@ -52,6 +52,44 @@ export async function signIn(email: string, password: string) {
   return false;
 }
 
+export async function registerUser(
+  username: string,
+  email: string,
+  password: string,
+  avatarUrl: string,
+  bannerUrl: string
+) {
+  const response = await fetch(`${API_URL}/social/auth/register`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: username,
+      email,
+      password,
+      avatar: avatarUrl,
+      banner: bannerUrl,
+    }),
+  });
+
+  if (response.status == 201) {
+    return true;
+  } else if (response.status == 400) {
+    const responseData = await response.json();
+    const errors: [{ message: string }] = responseData.errors;
+
+    return (
+      "Registration failed with error(s):\n" +
+      errors.map((error) => `- ${error.message}`).join("\n")
+    );
+  }
+
+  console.error("Unexpected API response", response);
+
+  throw `Unknown response code from API: ${response.status}`;
+}
+
 export async function createPost() {
   const response = await fetch(`${API_URL}/social/posts`, {
     method: "post",

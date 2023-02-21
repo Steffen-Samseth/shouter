@@ -20,14 +20,21 @@ import { HelmetProvider } from "react-helmet-async";
 const queryClient = new QueryClient();
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
-  const loginInfo = getLoginInfo();
-  return loginInfo ? children : <Navigate to="/login" />;
+  const authenticated = getLoginInfo() !== null;
+  return authenticated ? children : <Navigate to="/login" replace />;
+};
+
+// Wrapper for a route that can only be visited when not logged in, such as the
+// login- and register pages.
+const UnauthenticatedRoute = ({ children }: { children: ReactElement }) => {
+  const authenticated = getLoginInfo() !== null;
+  return authenticated ? <Navigate to="/" replace /> : children;
 };
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/posts" />,
+    element: <Navigate to="/posts" replace />,
   },
   {
     path: "/posts",
@@ -47,11 +54,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <UnauthenticatedRoute>
+        <Login />
+      </UnauthenticatedRoute>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <UnauthenticatedRoute>
+        <Register />
+      </UnauthenticatedRoute>
+    ),
   },
   {
     path: "/posts/:id",
