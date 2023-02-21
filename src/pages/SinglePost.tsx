@@ -39,7 +39,7 @@ const SinglePost: FunctionComponent = () => {
       )}
 
       {query.isSuccess && post === null && (
-        <div className="my-24 text-center text-3xl font-bold text-white">
+        <div className="my-24 text-center text-3xl font-bold text-white/80">
           This post does not exist
         </div>
       )}

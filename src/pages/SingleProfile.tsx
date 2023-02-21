@@ -7,6 +7,7 @@ import {
   fetchPostsByProfile,
   fetchSingleProfile,
   getLoginInfo,
+  Profile,
 } from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
 import Heart from "../components/icons/Heart";
@@ -46,56 +47,50 @@ const SingleProfile: FunctionComponent = () => {
     },
   });
 
-  if (query.isLoading) return <div className="text-white">Loading...</div>;
-
   if (query.isError)
     return (
       <div className="text-white">{`An error has occured ${query.error}`}</div>
     );
 
-  const [profile, posts] = query.data!;
-
-  if (profile == null || posts == null)
-    return (
-      <Layout>
-        <div className="mb-1 flex flex-row p-6">
-          <Link to="/">
-            <ArrowLeft className="h-6 fill-white pr-8" />
-          </Link>
-          <h1 className="font-bold text-white">404 profile not found</h1>
-        </div>
-      </Layout>
-    );
+  const [profile, posts] = query.data ? query.data : [null, null];
 
   const showNumFollowers = 5;
-  const totalNumFollowers = profile.followers.length;
-  const excessFollowers = totalNumFollowers - showNumFollowers;
+
+  const getExcessFollowers = (profile: Profile) =>
+    profile.followers.length - showNumFollowers;
+
+  const pageName = () => {
+    if (query.isLoading) return "Shouter";
+
+    if (query.isSuccess && query.data[0]) return query.data[0].name;
+
+    return "404 Profile Not Found";
+  };
 
   return (
-    <Layout title={profile.name}>
+    <Layout title={pageName()}>
       <div className="flex flex-row border-b-4 border-zinc-800 p-6">
         <Link to="/">
           <ArrowLeft className="h-6 fill-white pr-8" />
         </Link>
-        <h1 className="font-bold text-white">{profile.name}</h1>
+        <h1 className="font-bold text-white">{profileName}</h1>
       </div>
-      <div className="h-52">
-        <img
-          className="h-full w-full object-cover object-center"
-          src={profile.banner || "../../public/img/default-profile-picture.png"}
-          onError={(e) =>
-            (e.currentTarget.src =
-              "../../public/img/default-profile-picture.png")
-          }
-        />
-      </div>
-      <div className="mb-6 px-6">
-        <div className="mb-6 flex items-start justify-between">
-          <div className="-mt-16 aspect-square w-32 overflow-hidden rounded-full">
+
+      {query.isLoading && <LoadingSpinner className="my-24 mx-auto w-24" />}
+
+      {query.isSuccess && !profile && !posts && (
+        <div className="my-24 text-center text-3xl font-bold text-white/80">
+          This profile does not exist
+        </div>
+      )}
+
+      {query.isSuccess && profile && posts && (
+        <>
+          <div className="h-52">
             <img
               className="h-full w-full object-cover object-center"
               src={
-                profile.avatar || "../../public/img/default-profile-picture.png"
+                profile.banner || "../../public/img/default-profile-picture.png"
               }
               onError={(e) =>
                 (e.currentTarget.src =
@@ -103,65 +98,88 @@ const SingleProfile: FunctionComponent = () => {
               }
             />
           </div>
-          <div className="flex flex-col gap-2 pt-4 text-right">
-            {getLoginInfo()!.name == profile.name ? (
-              <>
-                <button
-                  onClick={() => setBannerPopupIsOpen(true)}
-                  className="button"
-                >
-                  Edit banner
-                </button>
-                <button
-                  onClick={() => setAvatarPopupIsOpen(true)}
-                  className="button"
-                >
-                  Edit avatar
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="inline-flex items-center gap-2 text-zinc-400">
-                  <Heart className="w-4 fill-zinc-400" />
-                  Follow
-                </button>
-                <div className="text-zinc-400">
-                  {profile._count.followers} Followers
-                </div>
-              </>
-            )}
+          <div className="mb-6 px-6">
+            <div className="mb-6 flex items-start justify-between">
+              <div className="-mt-16 aspect-square w-32 overflow-hidden rounded-full">
+                <img
+                  className="h-full w-full object-cover object-center"
+                  src={
+                    profile.avatar ||
+                    "../../public/img/default-profile-picture.png"
+                  }
+                  onError={(e) =>
+                    (e.currentTarget.src =
+                      "../../public/img/default-profile-picture.png")
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-2 pt-4 text-right">
+                {getLoginInfo()!.name == profile.name ? (
+                  <>
+                    <button
+                      onClick={() => setBannerPopupIsOpen(true)}
+                      className="button"
+                    >
+                      Edit banner
+                    </button>
+                    <button
+                      onClick={() => setAvatarPopupIsOpen(true)}
+                      className="button"
+                    >
+                      Edit avatar
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="inline-flex items-center gap-2 text-zinc-400">
+                      <Heart className="w-4 fill-zinc-400" />
+                      Follow
+                    </button>
+                    <div className="text-zinc-400">
+                      {profile._count.followers} Followers
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            <div>
+              <h2 className="mb-6 text-xl font-bold text-white">
+                {profile.name}
+              </h2>
+              <div className="flex items-center text-xs text-white">
+                <div className="mr-4">Followers:</div>
+                {profile.followers
+                  .slice(0, showNumFollowers)
+                  .map((follower) => (
+                    <Link to={`/profiles/${follower.name}`} key={follower.name}>
+                      <div
+                        title={follower.name}
+                        className="-ml-2 aspect-square w-6 overflow-hidden rounded-full"
+                      >
+                        <img
+                          className="h-full w-full object-cover object-center"
+                          src={follower.avatar}
+                          onError={(e) =>
+                            (e.currentTarget.src =
+                              "../../public/img/default-profile-picture.png")
+                          }
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                {getExcessFollowers(profile) > 0 && (
+                  <div className="ml-2">
+                    +{getExcessFollowers(profile)} more
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="mb-6 text-xl font-bold text-white">{profile.name}</h2>
-          <div className="flex items-center text-xs text-white">
-            <div className="mr-4">Followers:</div>
-            {profile.followers.slice(0, showNumFollowers).map((follower) => (
-              <Link to={`/profiles/${follower.name}`} key={follower.name}>
-                <div
-                  title={follower.name}
-                  className="-ml-2 aspect-square w-6 overflow-hidden rounded-full"
-                >
-                  <img
-                    className="h-full w-full object-cover object-center"
-                    src={follower.avatar}
-                    onError={(e) =>
-                      (e.currentTarget.src =
-                        "../../public/img/default-profile-picture.png")
-                    }
-                  />
-                </div>
-              </Link>
-            ))}
-            {excessFollowers > 0 && (
-              <div className="ml-2">+{excessFollowers} more</div>
-            )}
-          </div>
-        </div>
-      </div>
-      {posts.map((post) => (
-        <Post post={post} key={post.id} />
-      ))}
+          {posts.map((post) => (
+            <Post post={post} key={post.id} />
+          ))}
+        </>
+      )}
 
       {bannerPopupIsOpen && (
         <div
