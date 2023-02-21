@@ -4,14 +4,13 @@ import { fetchPosts, createPost } from "../api";
 import Post from "../components/Post";
 import Bullhorn from "../components/icons/Bullhorn";
 import Layout from "../components/Layout";
+import LoadingSpinner from "../components/icons/LoadingSpinner";
 
 const Posts: FunctionComponent = () => {
   const query = useQuery("posts", fetchPosts, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
-
-  if (query.isLoading) return <div>Loading...</div>;
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
@@ -35,9 +34,10 @@ const Posts: FunctionComponent = () => {
         </div>
       </div>
 
-      {query.data!.map((post) => (
-        <Post post={post} key={post.id} />
-      ))}
+      {query.isLoading && <LoadingSpinner className="mx-auto my-24 w-24" />}
+
+      {query.isSuccess &&
+        query.data!.map((post) => <Post post={post} key={post.id} />)}
     </Layout>
   );
 };
