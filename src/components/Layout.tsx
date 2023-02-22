@@ -41,9 +41,6 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
               <Link to="/profiles" className="button">
                 View all profile
               </Link>
-              <Link to="/" className="button">
-                About us
-              </Link>
             </nav>
           )}
         </div>
@@ -56,16 +53,20 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
           {isLoggedIn && (
             <div className="flex flex-row">
               <div className="aspect-square h-6 w-6 overflow-hidden rounded-full">
-                <img
-                  className="h-full w-full object-cover object-center"
-                  src={
-                    loginInfo.avatar ||
-                    "../../public/img/default-profile-picture.png"
-                  }
-                />
+                <Link to={`/profiles/${loginInfo.name}`}>
+                  <img
+                    className="h-full w-full object-cover object-center"
+                    src={
+                      loginInfo.avatar ||
+                      "../../public/img/default-profile-picture.png"
+                    }
+                  />
+                </Link>
               </div>
               <div className="ml-2 flex flex-col text-xs text-white">
-                <div>{loginInfo.name}</div>
+                <Link to={`/profiles/${loginInfo.name}`}>
+                  <div>{loginInfo.name}</div>
+                </Link>
                 <button
                   className="text-start"
                   onClick={() => {
