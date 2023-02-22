@@ -39,7 +39,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
                 My profile
               </Link>
               <Link to="/profiles" className="button">
-                View all profile
+                View all profiles
               </Link>
             </nav>
           )}
@@ -52,7 +52,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
         <div className="w-1/5 pt-5 pl-5">
           {isLoggedIn && (
             <div className="flex flex-row">
-              <div className="aspect-square h-6 w-6 overflow-hidden rounded-full">
+              <div className="aspect-square h-10 w-10 overflow-hidden rounded-full">
                 <Link to={`/profiles/${loginInfo.name}`}>
                   <img
                     className="h-full w-full object-cover object-center"
@@ -63,7 +63,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
                   />
                 </Link>
               </div>
-              <div className="ml-2 flex flex-col text-xs text-white">
+              <div className="ml-2 flex flex-col justify-between text-xs text-white">
                 <Link to={`/profiles/${loginInfo.name}`}>
                   <div>{loginInfo.name}</div>
                 </Link>
