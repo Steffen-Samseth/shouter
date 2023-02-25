@@ -108,7 +108,7 @@ export async function createPost() {
   return await response.json();
 }
 
-export async function createComment(postId: number) {
+export async function createComment(postId: number, commentBody: string) {
   const response = await fetch(`${API_URL}/social/posts/${postId}/comment`, {
     method: "post",
     headers: {
@@ -116,13 +116,7 @@ export async function createComment(postId: number) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      body: "",
-      created: "",
-      author: {
-        name: "",
-        email: "",
-        avatar: "",
-      },
+      body: commentBody,
     }),
   });
   return await response.json();
@@ -291,8 +285,8 @@ export interface Post {
     author: {
       name: string;
       email: string;
-      avatar: string;
-      banner: string;
+      avatar: string | null;
+      banner: string | null;
     };
   }>;
 }
