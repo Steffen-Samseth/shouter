@@ -252,6 +252,26 @@ export async function editBannerUrl(profileName: string, banner: string) {
   return response.status == 200;
 }
 
+export async function followProfile(profileName: string) {
+  const response = await fetch(`${API_URL}/social/profiles/${profileName}/follow`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+    },
+  });
+  return response.status == 200;
+}
+
+export async function unfollowProfile(profileName: string) {
+  const response = await fetch(`${API_URL}/social/profiles/${profileName}/unfollow`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+    },
+  });
+  return response.status == 200;
+}
+
 export interface Post {
   id: number;
   title: string;
@@ -303,7 +323,7 @@ export interface Profile {
   };
   followers: Array<{
     name: string;
-    avatar: string;
+    avatar: string | null;
   }>;
 }
 

@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { fetchProfiles, Profile } from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
-import Heart from "../components/icons/Heart";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 
@@ -31,7 +30,7 @@ const Profiles: FunctionComponent = () => {
           {query.data!.map((profile) => (
             <div className="flex flex-row p-4" key={profile.name}>
               {/*Profile left column*/}
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col justify-center">
                 <Link to={`/profiles/${profile.name}`}>
                   <div className="aspect-square h-12 w-12 overflow-hidden rounded-full">
                     <img
@@ -44,10 +43,6 @@ const Profiles: FunctionComponent = () => {
                     />
                   </div>
                 </Link>
-                <button className="flex items-center p-2 text-xs text-blue-300">
-                  <Heart className="mr-1 h-3 fill-blue-300" />
-                  Follow
-                </button>
               </div>
               {/*Profile right column*/}
               <div className="ml-4 flex max-w-full grow flex-col">

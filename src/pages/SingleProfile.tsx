@@ -1,34 +1,91 @@
 import { FunctionComponent, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Link, useParams } from "react-router-dom";
 import {
   editAvatarUrl,
   editBannerUrl,
   fetchPostsByProfile,
   fetchSingleProfile,
+  followProfile,
   getLoginInfo,
+  Post as PostType,
   Profile,
+  unfollowProfile,
 } from "../api";
 import ArrowLeft from "../components/icons/ArrowLeft";
 import Heart from "../components/icons/Heart";
+import HeartCrack from "../components/icons/HeartCrack";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 import Post from "../components/Post";
 
 const SingleProfile: FunctionComponent = () => {
+  const queryClient = useQueryClient();
   const [bannerPopupIsOpen, setBannerPopupIsOpen] = useState(false);
   const [newBannerUrl, setNewBannerUrl] = useState("");
   const [avatarPopupIsOpen, setAvatarPopupIsOpen] = useState(false);
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const { name: profileName } = useParams();
-  const query = useQuery(`profile-${profileName}`, async () => {
-    const profile = await fetchSingleProfile(profileName!);
-    const posts = await fetchPostsByProfile(profileName!);
-    return [profile, posts] as const;
+  const query = useQuery(
+    `profile-${profileName}`,
+    async () => {
+      const profile = await fetchSingleProfile(profileName!);
+      const posts = await fetchPostsByProfile(profileName!);
+      return [profile, posts] as const;
+    },
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const followMutation = useMutation({
+    mutationFn: () => {
+      return followProfile(profileName!);
+    },
+    onMutate: () => {
+      queryClient.setQueryData<[Profile, PostType[]]>(
+        `profile-${profileName}`,
+        (profileAndPosts) => {
+          const [profile, posts] = profileAndPosts!;
+
+          const newProfile: Profile = structuredClone(profile);
+          newProfile.followers.push({
+            name: getLoginInfo()!.name,
+            avatar: getLoginInfo()!.avatar,
+          });
+          newProfile._count.followers += 1;
+
+          return [newProfile, posts];
+        }
+      );
+    },
+  });
+
+  const unfollowMutation = useMutation({
+    mutationFn: () => {
+      return unfollowProfile(profileName!);
+    },
+    onMutate: () => {
+      queryClient.setQueryData<[Profile, PostType[]]>(
+        `profile-${profileName}`,
+        (profileAndPosts) => {
+          const [profile, posts] = profileAndPosts!;
+
+          const newProfile: Profile = structuredClone(profile);
+          newProfile.followers = newProfile.followers.filter(
+            (follower) => follower.name != getLoginInfo()!.name
+          );
+          newProfile._count.followers -= 1;
+
+          return [newProfile, posts];
+        }
+      );
+    },
   });
 
   const updateBannerMutation = useMutation({
-    mutationFn: (_) => {
+    mutationFn: () => {
       return editBannerUrl(profileName!, newBannerUrl);
     },
     onSuccess: () => {
@@ -38,7 +95,7 @@ const SingleProfile: FunctionComponent = () => {
   });
 
   const updateAvatarMutation = useMutation({
-    mutationFn: (_) => {
+    mutationFn: () => {
       return editAvatarUrl(profileName!, newAvatarUrl);
     },
     onSuccess: () => {
@@ -116,10 +173,25 @@ const SingleProfile: FunctionComponent = () => {
                   </>
                 ) : (
                   <>
-                    <button className="inline-flex items-center gap-2 text-zinc-400">
-                      <Heart className="w-4 fill-zinc-400" />
-                      Follow
-                    </button>
+                    {profile.followers.some(
+                      (follower) => follower.name == getLoginInfo()!.name
+                    ) ? (
+                      <button
+                        className="inline-flex items-center gap-2 text-zinc-400"
+                        onClick={() => unfollowMutation.mutate()}
+                      >
+                        <HeartCrack className="w-4 fill-zinc-400" />
+                        Unfollow
+                      </button>
+                    ) : (
+                      <button
+                        className="inline-flex items-center gap-2 text-zinc-400"
+                        onClick={() => followMutation.mutate()}
+                      >
+                        <Heart className="w-4 fill-zinc-400" />
+                        Follow
+                      </button>
+                    )}
                     <div className="text-zinc-400">
                       {profile._count.followers} Followers
                     </div>
@@ -139,7 +211,10 @@ const SingleProfile: FunctionComponent = () => {
                     >
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={follower.avatar}
+                        src={
+                          follower.avatar ||
+                          "../../public/img/default-profile-picture.png"
+                        }
                         onError={(e) =>
                           (e.currentTarget.src =
                             "../../public/img/default-profile-picture.png")
