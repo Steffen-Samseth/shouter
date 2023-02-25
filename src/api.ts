@@ -125,8 +125,27 @@ export async function createComment(postId: number) {
       },
     }),
   });
-  console.log(response);
   return await response.json();
+}
+
+export async function createReaction(postId: number, emoji: string) {
+  const response = await fetch(`${API_URL}/social/posts/${postId}/react/${emoji}`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      symbol: emoji,
+    }),
+  });
+
+  if (response.status != 200) {
+    console.error("Expected response code 200", response);
+    return false;
+  }
+
+  return true;
 }
 
 export async function deletePost(postId: number) {
@@ -181,10 +200,7 @@ export async function fetchPostsByProfile(profileName: string) {
     return (await response.json()) as Post[];
   }
 
-  console.log(
-    "fetchPostsByProfile got unexpected response code",
-    response.status
-  );
+  console.log("fetchPostsByProfile got unexpected response code", response.status);
   console.log(response);
 
   return null;
@@ -215,36 +231,30 @@ export async function fetchSingleProfile(profileName: string) {
 }
 
 export async function editAvatarUrl(profileName: string, avatar: string) {
-  const response = await fetch(
-    `${API_URL}/social/profiles/${profileName}/media`,
-    {
-      method: "put",
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        avatar: avatar,
-      }),
-    }
-  );
+  const response = await fetch(`${API_URL}/social/profiles/${profileName}/media`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      avatar: avatar,
+    }),
+  });
   return response.status == 200;
 }
 
 export async function editBannerUrl(profileName: string, banner: string) {
-  const response = await fetch(
-    `${API_URL}/social/profiles/${profileName}/media`,
-    {
-      method: "put",
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        banner: banner,
-      }),
-    }
-  );
+  const response = await fetch(`${API_URL}/social/profiles/${profileName}/media`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      banner: banner,
+    }),
+  });
   return response.status == 200;
 }
 
@@ -269,7 +279,7 @@ export interface Post {
     symbol: string;
     count: number;
     postId: number;
-    message: string;
+    message?: string;
   }>;
   comments: Array<{
     body: string;

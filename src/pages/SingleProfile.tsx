@@ -48,9 +48,7 @@ const SingleProfile: FunctionComponent = () => {
   });
 
   if (query.isError)
-    return (
-      <div className="text-white">{`An error has occured ${query.error}`}</div>
-    );
+    return <div className="text-white">{`An error has occured ${query.error}`}</div>;
 
   const [profile, posts] = query.data ? query.data : [null, null];
 
@@ -89,12 +87,9 @@ const SingleProfile: FunctionComponent = () => {
           <div className="h-52">
             <img
               className="h-full w-full object-cover object-center"
-              src={
-                profile.banner || "../../public/img/default-profile-picture.png"
-              }
+              src={profile.banner || "../../public/img/default-profile-picture.png"}
               onError={(e) =>
-                (e.currentTarget.src =
-                  "../../public/img/default-profile-picture.png")
+                (e.currentTarget.src = "../../public/img/default-profile-picture.png")
               }
             />
           </div>
@@ -103,29 +98,19 @@ const SingleProfile: FunctionComponent = () => {
               <div className="-mt-16 aspect-square w-32 overflow-hidden rounded-full">
                 <img
                   className="h-full w-full object-cover object-center"
-                  src={
-                    profile.avatar ||
-                    "../../public/img/default-profile-picture.png"
-                  }
+                  src={profile.avatar || "../../public/img/default-profile-picture.png"}
                   onError={(e) =>
-                    (e.currentTarget.src =
-                      "../../public/img/default-profile-picture.png")
+                    (e.currentTarget.src = "../../public/img/default-profile-picture.png")
                   }
                 />
               </div>
               <div className="flex flex-col gap-2 pt-4 text-right">
                 {getLoginInfo()!.name == profile.name ? (
                   <>
-                    <button
-                      onClick={() => setBannerPopupIsOpen(true)}
-                      className="button"
-                    >
+                    <button onClick={() => setBannerPopupIsOpen(true)} className="button">
                       Edit banner
                     </button>
-                    <button
-                      onClick={() => setAvatarPopupIsOpen(true)}
-                      className="button"
-                    >
+                    <button onClick={() => setAvatarPopupIsOpen(true)} className="button">
                       Edit avatar
                     </button>
                   </>
@@ -143,34 +128,28 @@ const SingleProfile: FunctionComponent = () => {
               </div>
             </div>
             <div>
-              <h2 className="mb-6 text-xl font-bold text-white">
-                {profile.name}
-              </h2>
+              <h2 className="mb-6 text-xl font-bold text-white">{profile.name}</h2>
               <div className="flex items-center text-xs text-white">
                 <div className="mr-4">Followers:</div>
-                {profile.followers
-                  .slice(0, showNumFollowers)
-                  .map((follower) => (
-                    <Link to={`/profiles/${follower.name}`} key={follower.name}>
-                      <div
-                        title={follower.name}
-                        className="-ml-2 aspect-square w-6 overflow-hidden rounded-full"
-                      >
-                        <img
-                          className="h-full w-full object-cover object-center"
-                          src={follower.avatar}
-                          onError={(e) =>
-                            (e.currentTarget.src =
-                              "../../public/img/default-profile-picture.png")
-                          }
-                        />
-                      </div>
-                    </Link>
-                  ))}
+                {profile.followers.slice(0, showNumFollowers).map((follower) => (
+                  <Link to={`/profiles/${follower.name}`} key={follower.name}>
+                    <div
+                      title={follower.name}
+                      className="-ml-2 aspect-square w-6 overflow-hidden rounded-full"
+                    >
+                      <img
+                        className="h-full w-full object-cover object-center"
+                        src={follower.avatar}
+                        onError={(e) =>
+                          (e.currentTarget.src =
+                            "../../public/img/default-profile-picture.png")
+                        }
+                      />
+                    </div>
+                  </Link>
+                ))}
                 {getExcessFollowers(profile) > 0 && (
-                  <div className="ml-2">
-                    +{getExcessFollowers(profile)} more
-                  </div>
+                  <div className="ml-2">+{getExcessFollowers(profile)} more</div>
                 )}
               </div>
             </div>
