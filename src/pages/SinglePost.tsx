@@ -154,7 +154,7 @@ const SinglePost: FunctionComponent = () => {
                     <TimeAgo datetime={comment.created} />
                   </span>
                 </div>
-                <div className="mt-2 text-white">{comment.body}</div>
+                <div className="mt-2 whitespace-pre-wrap text-white">{comment.body}</div>
               </div>
             ))}
         </>

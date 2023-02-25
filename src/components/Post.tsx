@@ -207,12 +207,12 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
               <h2 className="font-bold text-white">{post.title}</h2>
             </Link>
           )) || <h2 className="font-bold text-white">{post.title}</h2>}
-          {post.body}
+          <div className="whitespace-pre-wrap">{post.body}</div>
         </div>
         {post.media && (
           <div className="max-h-128 grow basis-px overflow-hidden">
             <img
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-contain object-center"
               src={post.media}
               onError={(e) => (e.currentTarget.src = "../../public/img/broken-link.svg")}
             />
@@ -230,7 +230,7 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
             )}
           </div>
         </Link>
-        <div className="flex h-12 flex-row flex-wrap items-center gap-2 text-xs">
+        <div className="flex flex-row flex-wrap items-center gap-2 py-6">
           <EmojiPicker onEmojiClick={(emoji) => createReactionMutation.mutate(emoji)} />
           {post.reactions.map((reaction) => (
             <span
