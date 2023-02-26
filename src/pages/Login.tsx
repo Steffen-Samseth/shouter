@@ -27,7 +27,7 @@ const Login: FunctionComponent = () => {
           <h1 className="font-bold text-white">Sign in</h1>
         </div>
         <div className="flex flex-col items-center pt-4">
-          <form className="flex w-1/2 flex-col gap-6 text-zinc-400">
+          <form className="flex w-1/2 flex-col gap-6 text-zinc-200">
             <label className="hidden">Email</label>
             <input
               disabled={loginMutation.isLoading}
@@ -70,11 +70,7 @@ const Login: FunctionComponent = () => {
               }}
               type="submit"
             >
-              {loginMutation.isLoading ? (
-                <LoadingSpinner className="w-4" />
-              ) : (
-                "Sign in"
-              )}
+              {loginMutation.isLoading ? <LoadingSpinner className="w-4" /> : "Sign in"}
             </button>
           </form>
           <div className="mb-6 text-zinc-400">
