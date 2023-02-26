@@ -18,6 +18,7 @@ import EmojiPicker from "./EmojiPicker";
 import LoadingSpinner from "./icons/LoadingSpinner";
 
 import defaultProfilePic from "../../public/img/default-profile-picture.png";
+import brokenLinkImage from "../../public/img/broken-link.svg";
 
 // Adds a reaction emoji to a post object
 function addReactionToPost(post: PostType, emoji: string) {
@@ -277,7 +278,7 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true, onDelete }) =>
             <img
               className="h-full w-full object-contain object-center"
               src={post.media}
-              onError={(e) => (e.currentTarget.src = "/img/broken-link.svg")}
+              onError={(e) => (e.currentTarget.src = brokenLinkImage)}
             />
           </div>
         )}
