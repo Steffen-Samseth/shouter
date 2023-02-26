@@ -2,21 +2,28 @@ const API_URL = "https://api.noroff.dev/api/v1";
 
 // Fetches login info from localStorage
 export function getLoginInfo(): LoginInfo | null {
-  const loginInfoString = localStorage.getItem("login-info");
+  if (sessionStorage.getItem("login-info"))
+    return JSON.parse(sessionStorage.getItem("login-info")!) as LoginInfo;
 
-  if (loginInfoString) return JSON.parse(loginInfoString) as LoginInfo;
+  if (localStorage.getItem("login-info"))
+    return JSON.parse(localStorage.getItem("login-info")!) as LoginInfo;
 
   return null;
 }
 
-// Saves login info in localStorage
-function setLoginInfo(loginInfo: LoginInfo) {
-  localStorage.setItem("login-info", JSON.stringify(loginInfo));
+// Saves login info in local/session storage
+function setLoginInfo(loginInfo: LoginInfo, type: "session" | "persistent") {
+  if (type == "session") {
+    sessionStorage.setItem("login-info", JSON.stringify(loginInfo));
+  } else {
+    localStorage.setItem("login-info", JSON.stringify(loginInfo));
+  }
 }
 
 // Deletes login-info from localStorage
 export function signOut() {
   localStorage.removeItem("login-info");
+  sessionStorage.removeItem("login-info");
 }
 
 // Fetch access token from local storage, or crash if it doesn't exist
@@ -32,7 +39,11 @@ function getAccessToken() {
   return loginInfo.accessToken;
 }
 
-export async function signIn(email: string, password: string) {
+export async function signIn(
+  email: string,
+  password: string,
+  type: "session" | "persistent"
+) {
   const response = await fetch(`${API_URL}/social/auth/login`, {
     method: "post",
     headers: {
@@ -45,7 +56,7 @@ export async function signIn(email: string, password: string) {
   });
 
   if (response.status == 200) {
-    setLoginInfo(await response.json());
+    setLoginInfo(await response.json(), type);
     return true;
   }
 

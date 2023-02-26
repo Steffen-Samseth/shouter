@@ -12,7 +12,8 @@ const Login: FunctionComponent = () => {
   const navigate = useNavigate();
   const loginMutation = useMutation(
     async () => {
-      if (!(await signIn(email, password))) throw "Login failed";
+      if (!(await signIn(email, password, rememberMe ? "persistent" : "session")))
+        throw "Login failed";
     },
     {
       onSuccess: () => navigate("/"),
