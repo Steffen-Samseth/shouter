@@ -222,10 +222,8 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true, onDelete }) =>
           <div className="aspect-square w-16 overflow-hidden rounded-full">
             <img
               className="h-full w-full object-cover object-center"
-              src={post.author.avatar || "../../public/img/default-profile-picture.png"}
-              onError={(e) =>
-                (e.currentTarget.src = "../../public/img/default-profile-picture.png")
-              }
+              src={post.author.avatar || "/img/default-profile-picture.png"}
+              onError={(e) => (e.currentTarget.src = "/img/default-profile-picture.png")}
             />
           </div>
         </Link>
@@ -277,7 +275,7 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true, onDelete }) =>
             <img
               className="h-full w-full object-contain object-center"
               src={post.media}
-              onError={(e) => (e.currentTarget.src = "../../public/img/broken-link.svg")}
+              onError={(e) => (e.currentTarget.src = "/img/broken-link.svg")}
             />
           </div>
         )}

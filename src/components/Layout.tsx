@@ -17,18 +17,14 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
   return (
     <>
       <Helmet>
-        <link
-          rel="icon"
-          type="image/svg+xml"
-          href="../../public/img/logo.svg"
-        />
+        <link rel="icon" type="image/svg+xml" href="/img/logo.svg" />
         <title>{title}</title>
       </Helmet>
       <div className="container flex justify-evenly">
         {/* Left column */}
         <div className="flex w-1/5 flex-col items-center pt-12">
           <div className="mb-10">
-            <img src="../../public/img/logo.svg" />
+            <img src="/img/logo.svg" />
           </div>
           {isLoggedIn && (
             <nav className="flex flex-col gap-3 text-white">
@@ -56,10 +52,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
                 <Link to={`/profiles/${loginInfo.name}`}>
                   <img
                     className="h-full w-full object-cover object-center"
-                    src={
-                      loginInfo.avatar ||
-                      "../../public/img/default-profile-picture.png"
-                    }
+                    src={loginInfo.avatar || "/img/default-profile-picture.png"}
                   />
                 </Link>
               </div>

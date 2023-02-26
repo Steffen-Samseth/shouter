@@ -12,7 +12,7 @@ const Profiles: FunctionComponent = () => {
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
   const profilePicture = (profile: Profile) =>
-    profile.avatar || "../../public/img/default-profile-picture.png";
+    profile.avatar || "/img/default-profile-picture.png";
 
   return (
     <Layout title="Shouters">
@@ -37,8 +37,7 @@ const Profiles: FunctionComponent = () => {
                       className="h-full w-full object-cover object-center"
                       src={profilePicture(profile)}
                       onError={(e) =>
-                        (e.currentTarget.src =
-                          "../../public/img/default-profile-picture.png")
+                        (e.currentTarget.src = "/img/default-profile-picture.png")
                       }
                     />
                   </div>

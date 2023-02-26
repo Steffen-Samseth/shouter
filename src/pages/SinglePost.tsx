@@ -147,13 +147,9 @@ const SinglePost: FunctionComponent = () => {
                     <div className="aspect-square w-8 overflow-hidden rounded-full">
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={
-                          comment.author.avatar ||
-                          "../../public/img/default-profile-picture.png"
-                        }
+                        src={comment.author.avatar || "/img/default-profile-picture.png"}
                         onError={(e) =>
-                          (e.currentTarget.src =
-                            "../../public/img/default-profile-picture.png")
+                          (e.currentTarget.src = "/img/default-profile-picture.png")
                         }
                       />
                     </div>

@@ -138,10 +138,8 @@ const SingleProfile: FunctionComponent = () => {
           <div className="h-52">
             <img
               className="h-full w-full object-cover object-center"
-              src={profile.banner || "../../public/img/default-profile-picture.png"}
-              onError={(e) =>
-                (e.currentTarget.src = "../../public/img/default-profile-picture.png")
-              }
+              src={profile.banner || "/img/default-profile-picture.png"}
+              onError={(e) => (e.currentTarget.src = "/img/default-profile-picture.png")}
             />
           </div>
           <div className="mb-6 px-6">
@@ -149,9 +147,9 @@ const SingleProfile: FunctionComponent = () => {
               <div className="-mt-16 aspect-square w-32 overflow-hidden rounded-full">
                 <img
                   className="h-full w-full object-cover object-center"
-                  src={profile.avatar || "../../public/img/default-profile-picture.png"}
+                  src={profile.avatar || "/img/default-profile-picture.png"}
                   onError={(e) =>
-                    (e.currentTarget.src = "../../public/img/default-profile-picture.png")
+                    (e.currentTarget.src = "/img/default-profile-picture.png")
                   }
                 />
               </div>
@@ -205,13 +203,9 @@ const SingleProfile: FunctionComponent = () => {
                     >
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={
-                          follower.avatar ||
-                          "../../public/img/default-profile-picture.png"
-                        }
+                        src={follower.avatar || "/img/default-profile-picture.png"}
                         onError={(e) =>
-                          (e.currentTarget.src =
-                            "../../public/img/default-profile-picture.png")
+                          (e.currentTarget.src = "/img/default-profile-picture.png")
                         }
                       />
                     </div>
