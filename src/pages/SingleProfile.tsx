@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   editAvatarUrl,
   editBannerUrl,
@@ -26,6 +26,7 @@ const SingleProfile: FunctionComponent = () => {
   const [avatarPopupIsOpen, setAvatarPopupIsOpen] = useState(false);
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const { name: profileName } = useParams();
+  const navigate = useNavigate();
   const query = useQuery(`profile-${profileName}`, async () => {
     const profile = await fetchSingleProfile(profileName!);
     const posts = await fetchPostsByProfile(profileName!);
@@ -118,9 +119,9 @@ const SingleProfile: FunctionComponent = () => {
   return (
     <Layout title={pageName()}>
       <div className="flex flex-row border-b-4 border-zinc-800 p-6">
-        <Link to="/">
+        <button onClick={() => navigate(-1)}>
           <ArrowLeft className="h-6 fill-white pr-8" />
-        </Link>
+        </button>
         <h1 className="font-bold text-white">{profileName}</h1>
       </div>
 

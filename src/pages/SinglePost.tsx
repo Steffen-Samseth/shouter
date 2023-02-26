@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { createComment, fetchSinglePost, getLoginInfo, Post as PostType } from "../api";
 import TimeAgo from "timeago-react";
 import ArrowLeft from "../components/icons/ArrowLeft";
@@ -18,6 +18,7 @@ const SinglePost: FunctionComponent = () => {
     return await fetchSinglePost(Number(postId));
   });
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const post = query.data;
 
@@ -66,9 +67,9 @@ const SinglePost: FunctionComponent = () => {
   return (
     <Layout title={pageTitle()}>
       <div className="mb-1 flex flex-row p-6">
-        <Link to="/">
+        <button onClick={() => navigate(-1)}>
           <ArrowLeft className="h-6 fill-white pr-8" />
-        </Link>
+        </button>
         <h1 className="font-bold text-white">Shout</h1>
       </div>
 
