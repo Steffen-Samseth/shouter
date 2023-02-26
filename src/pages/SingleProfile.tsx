@@ -19,6 +19,8 @@ import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 import Post from "../components/Post";
 
+import defaultProfilePic from "../../public/img/default-profile-picture.png";
+
 const SingleProfile: FunctionComponent = () => {
   const queryClient = useQueryClient();
   const [bannerPopupIsOpen, setBannerPopupIsOpen] = useState(false);
@@ -138,8 +140,8 @@ const SingleProfile: FunctionComponent = () => {
           <div className="h-52">
             <img
               className="h-full w-full object-cover object-center"
-              src={profile.banner || "/img/default-profile-picture.png"}
-              onError={(e) => (e.currentTarget.src = "/img/default-profile-picture.png")}
+              src={profile.banner || defaultProfilePic}
+              onError={(e) => (e.currentTarget.src = defaultProfilePic)}
             />
           </div>
           <div className="mb-6 px-6">
@@ -147,10 +149,8 @@ const SingleProfile: FunctionComponent = () => {
               <div className="-mt-16 aspect-square w-32 overflow-hidden rounded-full">
                 <img
                   className="h-full w-full object-cover object-center"
-                  src={profile.avatar || "/img/default-profile-picture.png"}
-                  onError={(e) =>
-                    (e.currentTarget.src = "/img/default-profile-picture.png")
-                  }
+                  src={profile.avatar || defaultProfilePic}
+                  onError={(e) => (e.currentTarget.src = defaultProfilePic)}
                 />
               </div>
               <div className="flex flex-col gap-2 pt-4 text-right">
@@ -203,10 +203,8 @@ const SingleProfile: FunctionComponent = () => {
                     >
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={follower.avatar || "/img/default-profile-picture.png"}
-                        onError={(e) =>
-                          (e.currentTarget.src = "/img/default-profile-picture.png")
-                        }
+                        src={follower.avatar || defaultProfilePic}
+                        onError={(e) => (e.currentTarget.src = defaultProfilePic)}
                       />
                     </div>
                   </Link>

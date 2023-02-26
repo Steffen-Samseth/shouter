@@ -3,6 +3,9 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { getLoginInfo, signOut } from "../api";
 
+import logoUrl from "../../public/img/logo.svg";
+import defaultProfilePic from "../../public/img/default-profile-picture.png";
+
 interface Props {
   children?: ReactNode;
   title?: string;
@@ -24,7 +27,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
         {/* Left column */}
         <div className="flex w-1/5 flex-col items-center pt-12">
           <div className="mb-10">
-            <img src="/img/logo.svg" />
+            <img src={logoUrl} />
           </div>
           {isLoggedIn && (
             <nav className="flex flex-col gap-3 text-white">
@@ -52,7 +55,7 @@ const Layout: FunctionComponent<Props> = ({ children, title = "Shouter" }) => {
                 <Link to={`/profiles/${loginInfo.name}`}>
                   <img
                     className="h-full w-full object-cover object-center"
-                    src={loginInfo.avatar || "/img/default-profile-picture.png"}
+                    src={loginInfo.avatar || defaultProfilePic}
                   />
                 </Link>
               </div>

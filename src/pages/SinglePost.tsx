@@ -10,6 +10,8 @@ import Post from "../components/Post";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Plus from "../components/icons/Plus";
 
+import defaultProfilePic from "../../public/img/default-profile-picture.png";
+
 const SinglePost: FunctionComponent = () => {
   const [commentFormIsOpen, setCommentFormIsOpen] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -147,10 +149,8 @@ const SinglePost: FunctionComponent = () => {
                     <div className="aspect-square w-8 overflow-hidden rounded-full">
                       <img
                         className="h-full w-full object-cover object-center"
-                        src={comment.author.avatar || "/img/default-profile-picture.png"}
-                        onError={(e) =>
-                          (e.currentTarget.src = "/img/default-profile-picture.png")
-                        }
+                        src={comment.author.avatar || defaultProfilePic}
+                        onError={(e) => (e.currentTarget.src = defaultProfilePic)}
                       />
                     </div>
                   </Link>

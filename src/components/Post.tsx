@@ -17,6 +17,8 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 import EmojiPicker from "./EmojiPicker";
 import LoadingSpinner from "./icons/LoadingSpinner";
 
+import defaultProfilePic from "../../public/img/default-profile-picture.png";
+
 // Adds a reaction emoji to a post object
 function addReactionToPost(post: PostType, emoji: string) {
   let reactionAlreadyExists = false;
@@ -222,8 +224,8 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true, onDelete }) =>
           <div className="aspect-square w-16 overflow-hidden rounded-full">
             <img
               className="h-full w-full object-cover object-center"
-              src={post.author.avatar || "/img/default-profile-picture.png"}
-              onError={(e) => (e.currentTarget.src = "/img/default-profile-picture.png")}
+              src={post.author.avatar || defaultProfilePic}
+              onError={(e) => (e.currentTarget.src = defaultProfilePic)}
             />
           </div>
         </Link>
