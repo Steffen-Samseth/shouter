@@ -26,18 +26,11 @@ const SingleProfile: FunctionComponent = () => {
   const [avatarPopupIsOpen, setAvatarPopupIsOpen] = useState(false);
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
   const { name: profileName } = useParams();
-  const query = useQuery(
-    `profile-${profileName}`,
-    async () => {
-      const profile = await fetchSingleProfile(profileName!);
-      const posts = await fetchPostsByProfile(profileName!);
-      return [profile, posts] as const;
-    },
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const query = useQuery(`profile-${profileName}`, async () => {
+    const profile = await fetchSingleProfile(profileName!);
+    const posts = await fetchPostsByProfile(profileName!);
+    return [profile, posts] as const;
+  });
 
   const followMutation = useMutation({
     mutationFn: () => {

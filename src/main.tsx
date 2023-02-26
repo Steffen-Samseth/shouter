@@ -13,7 +13,15 @@ import Error404 from "./pages/Error404";
 import { getLoginInfo } from "./api";
 import { HelmetProvider } from "react-helmet-async";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  },
+});
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
   // Always scroll to top of page when switching pages

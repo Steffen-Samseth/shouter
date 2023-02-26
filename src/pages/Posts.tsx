@@ -7,10 +7,7 @@ import Layout from "../components/Layout";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 
 const Posts: FunctionComponent = () => {
-  const query = useQuery("posts", fetchPosts, {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  const query = useQuery("posts", fetchPosts);
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
@@ -36,8 +33,7 @@ const Posts: FunctionComponent = () => {
 
       {query.isLoading && <LoadingSpinner className="mx-auto my-24 w-24" />}
 
-      {query.isSuccess &&
-        query.data!.map((post) => <Post post={post} key={post.id} />)}
+      {query.isSuccess && query.data!.map((post) => <Post post={post} key={post.id} />)}
     </Layout>
   );
 };
