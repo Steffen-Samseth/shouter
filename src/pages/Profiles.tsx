@@ -6,13 +6,14 @@ import ArrowLeft from "../components/icons/ArrowLeft";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 
+import defaultProfilePicture from "../assets/default-profile-picture.png";
+
 const Profiles: FunctionComponent = () => {
   const query = useQuery("profiles", fetchProfiles);
 
   if (query.isError) return <div>{`Oh fuck, an error: ${query.error}`}</div>;
 
-  const profilePicture = (profile: Profile) =>
-    profile.avatar || "/img/default-profile-picture.png";
+  const profilePicture = (profile: Profile) => profile.avatar || defaultProfilePicture;
 
   return (
     <Layout title="Shouters">
@@ -36,9 +37,7 @@ const Profiles: FunctionComponent = () => {
                     <img
                       className="h-full w-full object-cover object-center"
                       src={profilePicture(profile)}
-                      onError={(e) =>
-                        (e.currentTarget.src = "/img/default-profile-picture.png")
-                      }
+                      onError={(e) => (e.currentTarget.src = defaultProfilePicture)}
                     />
                   </div>
                 </Link>
