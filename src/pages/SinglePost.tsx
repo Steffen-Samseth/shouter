@@ -38,9 +38,6 @@ const SinglePost: FunctionComponent = () => {
     },
     {
       onMutate: () => {
-        // const originalPost: Post | undefined = queryClient.getQueryData(
-        //   `post-${post!.id}`
-        // );
         queryClient.setQueryData<PostType>(`post-${post!.id}`, (oldPost) => {
           const newPost: PostType = structuredClone(oldPost);
           newPost.comments.push({

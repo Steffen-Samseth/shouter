@@ -15,7 +15,6 @@ import Trash from "./icons/Trash";
 import Pen from "./icons/Pen";
 import { QueryClient, useMutation, useQueryClient } from "react-query";
 import EmojiPicker from "./EmojiPicker";
-import { createPortal } from "react-dom";
 import LoadingSpinner from "./icons/LoadingSpinner";
 
 // Adds a reaction emoji to a post object

@@ -101,22 +101,17 @@ export async function registerUser(
   throw `Unknown response code from API: ${response.status}`;
 }
 
-export async function createPost() {
+export async function createPost(title: string, body: string, media: string) {
   const response = await fetch(`${API_URL}/social/posts`, {
     method: "post",
     headers: {
       Authorization: `Bearer ${getAccessToken()}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      title: "myTitle",
-      body: "test",
-      tags: ["test"],
-      media:
-        "https://images2.minutemediacdn.com/image/upload/c_fill,w_720,ar_16:9,f_auto,q_auto,g_auto/shape/cover/sport/dataimagejpegbase649j4AAQSkZJRgABAQAAAQABAAD2wBDAA-5b40f5e07e270af8ccdfa80315d0d088.jpg",
-    }),
+    body: JSON.stringify({ title, body, media }),
   });
-  return await response.json();
+
+  return response.status == 200;
 }
 
 export async function createComment(postId: number, commentBody: string) {
@@ -319,7 +314,7 @@ export interface Post {
   author: {
     name: string;
     email: string;
-    avatar: string;
+    avatar: string | null;
   };
   reactions: Array<{
     symbol: string;
