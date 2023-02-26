@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { createComment, fetchSinglePost, getLoginInfo, Post as PostType } from "../api";
 import TimeAgo from "timeago-react";
@@ -19,6 +19,11 @@ const SinglePost: FunctionComponent = () => {
   });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const postIsDeleting =
+    useIsMutating({
+      mutationKey: ["delete-post", Number(postId!)],
+    }) > 0;
 
   const post = query.data;
 
@@ -84,7 +89,16 @@ const SinglePost: FunctionComponent = () => {
 
       {query.isSuccess && post && (
         <>
-          <Post post={post} clickable={false} />
+          <div className="relative">
+            <Post post={post} clickable={false} onDelete={() => navigate("/")} />
+
+            {postIsDeleting && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/80">
+                <LoadingSpinner className="w-24" />
+              </div>
+            )}
+          </div>
+
           <div className="mb-4 flex flex-row items-center justify-between p-4 text-white">
             Comments
             <button

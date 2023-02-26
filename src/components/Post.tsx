@@ -115,8 +115,9 @@ function optimisticReactToPost(
 interface Props {
   post: PostType;
   clickable?: boolean;
+  onDelete?: () => void;
 }
-const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
+const Post: FunctionComponent<Props> = ({ post, clickable = true, onDelete }) => {
   const [editDialogIsOpen, setEditDialogIsOpen] = useState(false);
   const [newPostTitle, setNewPostTitle] = useState(post.title);
   const [newPostBody, setNewPostBody] = useState(post.body);
@@ -125,22 +126,48 @@ const Post: FunctionComponent<Props> = ({ post, clickable = true }) => {
   const queryClient = useQueryClient();
 
   const deletePostMutation = useMutation(async () => await deletePost(post.id), {
-    mutationKey: "posts-delete",
+    mutationKey: ["delete-post", post.id],
 
     onMutate: () => {
-      const originalPosts: PostType[] | undefined = queryClient.getQueryData("posts");
+      const postsKey = "posts";
+      const profileKey = `profile-${getLoginInfo()!.name}`;
 
-      queryClient.setQueryData("posts", (posts: PostType[] | undefined) => {
-        return posts!.filter((x) => x.id != post.id);
-      });
+      const context = {
+        [postsKey]: queryClient.getQueryData<PostType[]>(postsKey),
+        [profileKey]: queryClient.getQueryData<[Profile, PostType[]]>(profileKey),
+      };
 
-      return originalPosts;
+      if (context[postsKey]) {
+        queryClient.setQueryData(postsKey, (posts: PostType[] | undefined) => {
+          return posts!.filter((x) => x.id != post.id);
+        });
+      }
+
+      if (context[profileKey]) {
+        queryClient.setQueryData<[Profile, PostType[]]>(profileKey, (profileAndPosts) => {
+          const [profile, posts] = profileAndPosts!;
+
+          return [profile, posts!.filter((x) => x.id != post.id)];
+        });
+      }
+
+      return context;
     },
 
-    onError: (_error, _variables, originalPosts: PostType[] | undefined) => {
-      queryClient.setQueryData("posts", () => {
-        return originalPosts!;
-      });
+    onSuccess: () => {
+      queryClient.resetQueries(`post-${post.id}`);
+
+      if (onDelete) onDelete();
+    },
+
+    onError: (_error, _variables, context) => {
+      alert("Failed to delete post! Check your network connection.");
+
+      for (const key in context!) {
+        if (context[key]) {
+          queryClient.setQueryData(key, (_) => context[key]);
+        }
+      }
     },
   });
 
