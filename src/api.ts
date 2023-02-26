@@ -224,6 +224,27 @@ export async function fetchSingleProfile(profileName: string) {
   return null;
 }
 
+export async function editPost(
+  postId: number,
+  title: string,
+  body: string,
+  media: string | null
+) {
+  const response = await fetch(`${API_URL}/social/posts/${postId}`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      body,
+      media,
+    }),
+  });
+  return response.status == 200;
+}
+
 export async function editAvatarUrl(profileName: string, avatar: string) {
   const response = await fetch(`${API_URL}/social/profiles/${profileName}/media`, {
     method: "put",
@@ -277,7 +298,7 @@ export interface Post {
   title: string;
   body: string;
   tags: string[];
-  media: string;
+  media: string | null;
   created: string;
   updated: string;
   _count: {
