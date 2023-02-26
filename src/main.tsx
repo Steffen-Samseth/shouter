@@ -1,10 +1,6 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./index.css";
 import Posts from "./pages/Posts";
 import Profiles from "./pages/Profiles";
@@ -20,6 +16,11 @@ import { HelmetProvider } from "react-helmet-async";
 const queryClient = new QueryClient();
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
+  // Always scroll to top of page when switching pages
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   const authenticated = getLoginInfo() !== null;
   return authenticated ? children : <Navigate to="/login" replace />;
 };
@@ -27,6 +28,11 @@ const PrivateRoute = ({ children }: { children: ReactElement }) => {
 // Wrapper for a route that can only be visited when not logged in, such as the
 // login- and register pages.
 const UnauthenticatedRoute = ({ children }: { children: ReactElement }) => {
+  // Always scroll to top of page when switching pages
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   const authenticated = getLoginInfo() !== null;
   return authenticated ? <Navigate to="/" replace /> : children;
 };
