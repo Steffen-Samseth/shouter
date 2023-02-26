@@ -139,6 +139,10 @@ const SinglePost: FunctionComponent = () => {
                           comment.author.avatar ||
                           "../../public/img/default-profile-picture.png"
                         }
+                        onError={(e) =>
+                          (e.currentTarget.src =
+                            "../../public/img/default-profile-picture.png")
+                        }
                       />
                     </div>
                   </Link>
