@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { getLoginInfo, signOut } from "../api";
 
-import logoUrl from "../../public/img/logo.svg";
-import defaultProfilePic from "../../public/img/default-profile-picture.png";
+import logoUrl from "../assets/logo.svg";
+import defaultProfilePic from "../assets/default-profile-picture.png";
 
 interface Props {
   children?: ReactNode;

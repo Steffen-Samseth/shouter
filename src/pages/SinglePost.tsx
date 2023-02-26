@@ -10,7 +10,7 @@ import Post from "../components/Post";
 import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Plus from "../components/icons/Plus";
 
-import defaultProfilePic from "../../public/img/default-profile-picture.png";
+import defaultProfilePic from "../assets/default-profile-picture.png";
 
 const SinglePost: FunctionComponent = () => {
   const [commentFormIsOpen, setCommentFormIsOpen] = useState(false);

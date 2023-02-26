@@ -17,8 +17,8 @@ import { QueryClient, useMutation, useQueryClient } from "react-query";
 import EmojiPicker from "./EmojiPicker";
 import LoadingSpinner from "./icons/LoadingSpinner";
 
-import defaultProfilePic from "../../public/img/default-profile-picture.png";
-import brokenLinkImage from "../../public/img/broken-link.svg";
+import defaultProfilePic from "../assets/default-profile-picture.png";
+import brokenLinkImage from "../assets/broken-link.svg";
 
 // Adds a reaction emoji to a post object
 function addReactionToPost(post: PostType, emoji: string) {

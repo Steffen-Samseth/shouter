@@ -19,7 +19,7 @@ import LoadingSpinner from "../components/icons/LoadingSpinner";
 import Layout from "../components/Layout";
 import Post from "../components/Post";
 
-import defaultProfilePic from "../../public/img/default-profile-picture.png";
+import defaultProfilePic from "../assets/default-profile-picture.png";
 
 const SingleProfile: FunctionComponent = () => {
   const queryClient = useQueryClient();
